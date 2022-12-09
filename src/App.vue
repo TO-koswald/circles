@@ -1,47 +1,40 @@
-<script setup>
-import HelloWorld from './components/HelloWorld.vue'
-import TheWelcome from './components/TheWelcome.vue'
-</script>
-
 <template>
-  <header>
-    <img alt="Vue logo" class="logo" src="./assets/logo.svg" width="125" height="125" />
-
-    <div class="wrapper">
-      <HelloWorld msg="You did it!" />
+  <main @click="addCircle">
+    <div
+      v-for="(circle, index) in circles"
+      :key="index"
+      class="circle"
+      :style="{ left: `${circle.x}px`, top: `${circle.y}px` }"
+    >
+      o
     </div>
-  </header>
-
-  <main>
-    <TheWelcome />
   </main>
 </template>
 
-<style scoped>
-header {
-  line-height: 1.5;
+<script setup>
+import { ref } from "vue";
+const circles = ref([]);
+
+function addCircle(e) {
+  const { clientX: x, clientY: y } = e;
+
+  circles.value.push({ x, y });
+}
+</script>
+
+<style>
+body {
+  margin: 0;
+  padding: 0;
 }
 
-.logo {
-  display: block;
-  margin: 0 auto 2rem;
+main {
+  height: 100vh;
+  background-color: black;
 }
 
-@media (min-width: 1024px) {
-  header {
-    display: flex;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
-  }
-
-  .logo {
-    margin: 0 2rem 0 0;
-  }
-
-  header .wrapper {
-    display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
-  }
+.circle {
+  position: absolute;
+  color: white;
 }
 </style>
