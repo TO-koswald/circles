@@ -1,6 +1,6 @@
 <template>
-  <button @click="undo">undo</button>
-  <button @click="redo">redo</button>
+  <button @click="undo" :disabled="visibleCircles.length === 0">undo</button>
+  <button @click="redo" :disabled="poppedCircles.length === 0">redo</button>
   <main @click="addCircle">
     <div
       v-for="(circle, index) in visibleCircles"
