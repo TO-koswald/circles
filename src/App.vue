@@ -16,10 +16,6 @@
 <script setup>
 import { ref } from "vue";
 const visibleCircles = ref([]);
-
-// circles that can be undone
-const pushedCircles = ref([]);
-// circles that can be redone
 const poppedCircles = ref([]);
 
 function addCircle(e) {
@@ -27,8 +23,6 @@ function addCircle(e) {
   const circle = { x, y };
 
   visibleCircles.value.push(circle);
-
-  pushedCircles.value.push(circle);
 }
 
 function undo() {
@@ -40,10 +34,9 @@ function undo() {
 
 function redo() {
   if (!poppedCircles.value.length) return;
-  const circleToPush = poppedCircles.value.pop();
 
+  const circleToPush = poppedCircles.value.pop();
   visibleCircles.value.push(circleToPush);
-  pushedCircles.value.push(circleToPush);
 }
 </script>
 
