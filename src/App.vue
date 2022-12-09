@@ -1,7 +1,9 @@
 <template>
+  <button @click="undo">undo</button>
+  <button @click="redo">redo</button>
   <main @click="addCircle">
     <div
-      v-for="(circle, index) in circles"
+      v-for="(circle, index) in visibleCircles"
       :key="index"
       class="circle"
       :style="{ left: `${circle.x}px`, top: `${circle.y}px` }"
@@ -13,12 +15,35 @@
 
 <script setup>
 import { ref } from "vue";
-const circles = ref([]);
+const visibleCircles = ref([]);
+
+// circles that can be undone
+const pushedCircles = ref([]);
+// circles that can be redone
+const poppedCircles = ref([]);
 
 function addCircle(e) {
   const { clientX: x, clientY: y } = e;
+  const circle = { x, y };
 
-  circles.value.push({ x, y });
+  visibleCircles.value.push(circle);
+
+  pushedCircles.value.push(circle);
+}
+
+function undo() {
+  if (!visibleCircles.value.length) return;
+
+  const poppedCircle = visibleCircles.value.pop();
+  poppedCircles.value.push(poppedCircle);
+}
+
+function redo() {
+  if (!poppedCircles.value.length) return;
+  const circleToPush = poppedCircles.value.pop();
+
+  visibleCircles.value.push(circleToPush);
+  pushedCircles.value.push(circleToPush);
 }
 </script>
 
